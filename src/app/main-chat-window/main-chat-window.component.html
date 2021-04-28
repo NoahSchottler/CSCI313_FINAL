@@ -1,0 +1,24 @@
+<div *ngIf="displayLoginEditor">
+  <h1>Login screen enter a username</h1>
+  <input type="text" #userNameInput >
+  <button class="btn btn-primary" (click)="selectUserName(userNameInput.value)">Choose this username</button>
+</div>
+<div *ngIf="displayChat">
+<div class="chatWindow" >
+<ol *ngFor="let messageToDisplay of  arr ">
+
+    <div #displayAllLoop>
+  <p>{{messageToDisplay.date |  date:'shortTime'}} {{messageToDisplay.userName}}: {{messageToDisplay.message}}</p>
+    </div>
+</ol>
+</div>
+<!-- if date display needs to be changed later here is a site explaining it 
+https://www.angularjswiki.com/angular/angular-date-pipe-formatting-date-times-in-angular-with-examples/-->
+<div> 
+    <input type="text" #messageInput >
+    <button class="btn btn-primary" (click)="sendMessage(messageInput.value)">send message</button>
+
+</div>
+<button (click)="logout()">logout</button>
+
+</div>

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import {message} from './message'
-import { AngularFirestore } from '@angular/fire/firestore';
+import { AngularFirestore, AngularFirestoreDocument } from '@angular/fire/firestore';
 import { map } from 'rxjs/operators';
 
 import { Observable } from 'rxjs';
@@ -9,7 +9,7 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class DBChatServiceService {
-
+  collectionPath= 'chatlog';
   
   messages: Observable<message[]>;
 
@@ -20,7 +20,7 @@ export class DBChatServiceService {
     // are displayed  ordered by the time they arrived. 
     // by default firebases are not sorted so we need to sort the data from the database when it arrives in our code
     // in this spot here.
-    this.messages=this.firestore.collection<message>('chatLog').valueChanges().pipe(map(ev => ev.sort(function(a, b) {
+    this.messages=this.firestore.collection<message>(this.collectionPath).valueChanges().pipe(map(ev => ev.sort(function(a, b) {
       return a.date - b.date;
     })))
    
@@ -29,12 +29,12 @@ export class DBChatServiceService {
 
 
   addMessageToDB(inputDate: number, inputUserName: string, inputMessage: string) {
-   this.firestore.collection<message>('chatLog').add({
+   this.firestore.collection<message>(this.collectionPath).add({
     date: inputDate,
     userName: inputUserName,
     message: inputMessage
    });
-
+  
    /** After a message is sent this checks what was said and does a bot response using a switch. The reason for the
     * setTimeout delay is if you do it at the same time sometimes the bots response shows up before the person message in the
     * array. If the message is one that does not detect any of the key words like !weather the switch just defaults and does nothing.
@@ -73,13 +73,26 @@ export class DBChatServiceService {
   
 }
 
+deleteAll( ): void {
+  // This code is sloppy as hell and would not work when using it on a live server, but we are just using it for 
+  // debugging purposes.
+  this.firestore.collection(this.collectionPath)
+  .get()
+  .toPromise()
+  .then((querySnapshot) => {
+  querySnapshot.forEach((doc) => {
+    doc.ref.delete();
+  });
+});
+}
+
 getMessages(){
   return this.messages;
 }
 
 botResponse(firestore: AngularFirestore, responseMessage: string, botName: string,inputDate :number){
 
-firestore.collection<message>('chatLog').add({
+firestore.collection<message>(this.collectionPath).add({
   date: inputDate+2000,
   userName: botName,
   message: responseMessage
@@ -88,7 +101,6 @@ firestore.collection<message>('chatLog').add({
 }
 
 }
-
 
 
 
@@ -115,4 +127,8 @@ function jokeRandomizer(inputUserName: string): string {
  }
 
 }
+
+
+
+
 

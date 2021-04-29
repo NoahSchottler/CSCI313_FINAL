@@ -23,7 +23,9 @@ export class MainChatWindowComponent implements OnInit {
     }
   );
   }
-  
+  delete(){
+    this.chatService.deleteAll();
+  }
 
   sendMessage(inputMessageTB: string){
     const currentDate: number = Date.now();

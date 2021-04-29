@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { DBChatServiceService } from '../dbchat-service.service';
 import { message } from '../message';
 export type EditorType = 'displayLogin' | 'displayChat' ;
@@ -11,6 +11,7 @@ export type EditorType = 'displayLogin' | 'displayChat' ;
 })
 export class MainChatWindowComponent implements OnInit {
   editor: EditorType = 'displayLogin'; // defaults to show the login screen.
+  @ViewChild('messageInput') inputMessageTB; // accessing the reference element
 
   arr: message[] = [];
   inputName: string;
@@ -30,6 +31,8 @@ export class MainChatWindowComponent implements OnInit {
   sendMessage(inputMessageTB: string){
     const currentDate: number = Date.now();
     this.chatService.addMessageToDB(currentDate,this.inputName,inputMessageTB);
+    this.inputMessageTB.nativeElement.value = ' ';
+
     }
 
 

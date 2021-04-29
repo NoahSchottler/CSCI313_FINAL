@@ -49,19 +49,19 @@ export class DBChatServiceService {
       botName= "Weather bot";
       // if you want to use an API for weather send it in in place of responseMessage here as an optional parameter.
       // then add it to the database in botResponse maybe via some sort of switch?
-      setTimeout(this.botResponse, 2000, this.firestore, responseMessage,botName,inputDate);
+      setTimeout(this.botResponse, 2000, this.firestore, responseMessage,botName,inputDate, this.collectionPath);
       break;
 
     case "!ndsu bison":
       responseMessage= inputUserName+ ": The North Dakota Bison won 42 to 20 against Eastern WA";
       botName= "Bison bot";
-      setTimeout(this.botResponse, 2000, this.firestore, responseMessage,botName,inputDate);
+      setTimeout(this.botResponse, 2000, this.firestore, responseMessage,botName,inputDate,this.collectionPath);
       break;
 
       case "!joke":
         responseMessage= jokeRandomizer(inputUserName);
         botName= "Joke bot";
-        setTimeout(this.botResponse, 2000, this.firestore, responseMessage,botName,inputDate);
+        setTimeout(this.botResponse, 2000, this.firestore, responseMessage,botName,inputDate,this.collectionPath);
         break;
   
 
@@ -90,9 +90,8 @@ getMessages(){
   return this.messages;
 }
 
-botResponse(firestore: AngularFirestore, responseMessage: string, botName: string,inputDate :number){
-
-firestore.collection<message>(this.collectionPath).add({
+botResponse(firestore: AngularFirestore, responseMessage: string, botName: string,inputDate :number,collectionPathInput: string){
+firestore.collection<message>(collectionPathInput).add({
   date: inputDate+2000,
   userName: botName,
   message: responseMessage

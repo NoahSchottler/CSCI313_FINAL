@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, ViewChild } from '@angular/core';
 import {message} from './message'
 import { AngularFirestore, AngularFirestoreDocument } from '@angular/fire/firestore';
 import { map } from 'rxjs/operators';
@@ -10,7 +10,11 @@ import { Observable } from 'rxjs';
 })
 export class DBChatServiceService {
   collectionPath= 'chatlog';
-  
+  bots: { botName: string, botCase: string, botResponse: string }[] =[
+    { "botName": "Weather Bot","botCase":"!weather","botResponse":"Brrrr it is cold today in Fargo North Dakota" },
+    { "botName": "Bison Bot","botCase":"!ndsu bison","botResponse":"The North Dakota Bison won 42 to 20 against Eastern WA" },
+    { "botName": "Joke Bot","botCase":"!joke","botResponse": jokeRandomizer() },
+];
   messages: Observable<message[]>;
 
   constructor(private firestore: AngularFirestore ) {   
@@ -34,44 +38,30 @@ export class DBChatServiceService {
     userName: inputUserName,
     message: inputMessage
    });
-  
+   
    /** After a message is sent this checks what was said and does a bot response using a switch. The reason for the
     * setTimeout delay is if you do it at the same time sometimes the bots response shows up before the person message in the
     * array. If the message is one that does not detect any of the key words like !weather the switch just defaults and does nothing.
     */
    let responseMessage: string;
    let botName: string;
+   
 
-  switch (inputMessage.toLowerCase()){
-    // reminder the cases are all lowercase so if you add another case/bot make sure it is all lower case.
-    case "!weather":
-      responseMessage= inputUserName+ ": Brrrr it is cold today in Fargo North Dakota";
-      botName= "Weather bot";
-      // if you want to use an API for weather send it in in place of responseMessage here as an optional parameter.
-      // then add it to the database in botResponse maybe via some sort of switch?
-      setTimeout(this.botResponse, 2000, this.firestore, responseMessage,botName,inputDate, this.collectionPath);
-      break;
+   for(let i=0; i< this.bots.length;i++) {
+    if(inputMessage.toLowerCase() == this.bots[i].botCase.toLowerCase()){
+    responseMessage=inputUserName +" : " + this.bots[i].botResponse;
+    botName = this.bots[i].botName
+    botResponseNew(this.firestore,responseMessage,botName,inputDate,this.collectionPath);
+    break;
+   }
+ }
 
-    case "!ndsu bison":
-      responseMessage= inputUserName+ ": The North Dakota Bison won 42 to 20 against Eastern WA";
-      botName= "Bison bot";
-      setTimeout(this.botResponse, 2000, this.firestore, responseMessage,botName,inputDate,this.collectionPath);
-      break;
 
-      case "!joke":
-        responseMessage= jokeRandomizer(inputUserName);
-        botName= "Joke bot";
-        setTimeout(this.botResponse, 2000, this.firestore, responseMessage,botName,inputDate,this.collectionPath);
-        break;
   
-
-    default:
-        break;
   }
 
-
   
-}
+
 
 deleteAll( ): void {
   // This code is sloppy as hell and would not work when using it on a live server, but we are just using it for 
@@ -89,35 +79,29 @@ deleteAll( ): void {
 getMessages(){
   return this.messages;
 }
+//function botResponse(botResponse: any, firestore: AngularFirestore, responseMessage: string, botName: string, inputDate: number, collectionPathInput: string) {
 
-botResponse(firestore: AngularFirestore, responseMessage: string, botName: string,inputDate :number,collectionPathInput: string){
-firestore.collection<message>(collectionPathInput).add({
-  date: inputDate+2000,
-  userName: botName,
-  message: responseMessage
- });
 
-}
 
 }
 
 
 
 
-function jokeRandomizer(inputUserName: string): string {
+function jokeRandomizer(): string {
  const num= Math.floor((Math.random() * 3) + 1); // generates a random number 1-3
  let responseMessage: string;
  switch(num){
    case 1:
-    responseMessage= inputUserName+ ": What do you call a fake noodle? An impasta";
+    responseMessage= ": What do you call a fake noodle? An impasta";
     return responseMessage;
 
    case 2:
-    responseMessage= inputUserName+ ": What do you call an alligator in a vest? An investigator";
+    responseMessage=  ": What do you call an alligator in a vest? An investigator";
     return responseMessage;
 
     case 3:
-    responseMessage= inputUserName+ ": What do we do with dead scientists? We barium!";
+    responseMessage=  ": What do we do with dead scientists? We barium!";
     return responseMessage;
 
     default:
@@ -131,3 +115,12 @@ function jokeRandomizer(inputUserName: string): string {
 
 
 
+
+
+function botResponseNew(firestore: AngularFirestore, responseMessage: string, botName: string, inputDate: number, collectionPathNew: string) {
+  firestore.collection<message>(collectionPathNew).add({
+    date: inputDate+1000,
+    userName: botName,
+    message: responseMessage
+   });
+}

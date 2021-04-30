@@ -11,10 +11,13 @@ export type EditorType = 'displayLogin' | 'displayChat' ;
 })
 export class MainChatWindowComponent implements OnInit {
   editor: EditorType = 'displayLogin'; // defaults to show the login screen.
-  @ViewChild('messageInput') inputMessageTB; // accessing the reference element
+  @ViewChild('messageInput') inputMessageTB2; // accessing the reference element
+ 
+
 
   arr: message[] = [];
   inputName: string;
+  showAddBot = false;
 
   constructor(private chatService: DBChatServiceService) { }
 
@@ -28,10 +31,15 @@ export class MainChatWindowComponent implements OnInit {
     this.chatService.deleteAll();
   }
 
-  sendMessage(inputMessageTB: string){
+   sendMessage(inputMesFromButton){
     const currentDate: number = Date.now();
-    this.chatService.addMessageToDB(currentDate,this.inputName,inputMessageTB);
-    this.inputMessageTB.nativeElement.value = ' ';
+   // resolve the adding of message to the database before clearing the chat box window.
+   // this requires using two different variable names one sent in from the button and another for clearing.
+   // I do not understand why, but even with using a promise if you use the same variable for both it does not work.
+    Promise.resolve(this.chatService.addMessageToDB(currentDate,this.inputName,inputMesFromButton)).then(function() {
+    });
+    this.inputMessageTB2.nativeElement.value = '';
+  
 
     }
 

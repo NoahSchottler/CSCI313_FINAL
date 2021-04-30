@@ -66,6 +66,14 @@ export class DBChatServiceService {
 
    for(let i=0; i< this.bots.length;i++) {
     if(inputMessage.toLowerCase() == this.bots[i].botCase.toLowerCase()){
+
+      if(this.bots[i].botCase.toLowerCase() == "!joke"){
+        responseMessage=inputUserName +" : " + jokeRandomizer();
+        botName = this.bots[i].botName
+        botResponseNew(this.firestore,responseMessage,botName,inputDate,this.collectionPath);
+        break;
+      }
+
     responseMessage=inputUserName +" : " + this.bots[i].botResponse;
     botName = this.bots[i].botName
     botResponseNew(this.firestore,responseMessage,botName,inputDate,this.collectionPath);

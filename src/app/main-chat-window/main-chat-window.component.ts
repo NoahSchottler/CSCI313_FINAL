@@ -49,10 +49,8 @@ export class MainChatWindowComponent implements OnInit {
     Promise.resolve(this.chatService.addMessageToDB(currentDate,this.inputName,inputMesFromButton)).then(function() {
     });
     this.inputMessageTB2.nativeElement.value = '';
-  
-
-    }
-
+    
+  }
 
   selectUserName(userNameInput: string){
     if (userNameInput.length > 0){

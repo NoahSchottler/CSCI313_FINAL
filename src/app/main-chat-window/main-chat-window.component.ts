@@ -31,6 +31,10 @@ export class MainChatWindowComponent implements OnInit {
     this.chatService.deleteAll();
   }
 
+  addBotButton(){
+    this.showAddBot = !this.showAddBot;
+  }
+
    sendMessage(inputMesFromButton){
     const currentDate: number = Date.now();
    // resolve the adding of message to the database before clearing the chat box window.

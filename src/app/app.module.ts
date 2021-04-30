@@ -8,11 +8,13 @@ import { environment } from "src/environments/environment";
 import { AngularFireModule } from "@angular/fire";
 import { AngularFirestoreModule } from "@angular/fire/firestore";
 import { FormsModule } from '@angular/forms'; // <-- NgModel lives here
+import { AddBotComponent } from './add-bot/add-bot.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    MainChatWindowComponent
+    MainChatWindowComponent,
+    AddBotComponent
   ],
   imports: [
     BrowserModule,

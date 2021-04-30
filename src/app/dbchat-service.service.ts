@@ -30,7 +30,9 @@ export class DBChatServiceService {
    
   }
  
-
+  addBot(name: string, bcase: string, response: string) {
+    this.bots.push({ "botName": name,"botCase": bcase,"botResponse": response });
+  }
 
   addMessageToDB(inputDate: number, inputUserName: string, inputMessage: string) {
    this.firestore.collection<message>(this.collectionPath).add({

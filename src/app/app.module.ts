@@ -7,14 +7,12 @@ import { MainChatWindowComponent } from './main-chat-window/main-chat-window.com
 import { environment } from "src/environments/environment";
 import { AngularFireModule } from "@angular/fire";
 import { AngularFirestoreModule } from "@angular/fire/firestore";
-import { AddBotComponent } from './add-bot/add-bot.component';
-import { FormsModule } from '@angular/forms';
+import { FormsModule } from '@angular/forms'; // <-- NgModel lives here
 
 @NgModule({
   declarations: [
     AppComponent,
-    MainChatWindowComponent,
-    AddBotComponent
+    MainChatWindowComponent
   ],
   imports: [
     BrowserModule,

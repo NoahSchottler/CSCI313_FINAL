@@ -1,5 +1,4 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { from } from 'rxjs';
 import { DBChatServiceService } from '../dbchat-service.service';
 import { message } from '../message';
 export type EditorType = 'displayLogin' | 'displayChat' ;
@@ -11,36 +10,37 @@ export type EditorType = 'displayLogin' | 'displayChat' ;
   styleUrls: ['./main-chat-window.component.css']
 })
 export class MainChatWindowComponent implements OnInit {
-  
-  constructor(private chatService: DBChatServiceService) { }
-
   editor: EditorType = 'displayLogin'; // defaults to show the login screen.
-  @ViewChild('messageInput') inputMessageTB; // accessing the reference element
+  @ViewChild('messageInput') inputMessageTB2; // accessing the reference element
+ 
+
 
   arr: message[] = [];
   inputName: string;
-
   showAddBot = false;
+
+  constructor(private chatService: DBChatServiceService) { }
 
   ngOnInit( ) {this.chatService.getMessages().subscribe(
     (mess: message[]) => {
       this.arr = mess;
     }
   );
-
   }
   delete(){
     this.chatService.deleteAll();
   }
 
-  addBotButton(){
-    this.showAddBot = !this.showAddBot;
-  }
-
-  sendMessage(inputMessageTB: string){
+   sendMessage(inputMesFromButton){
     const currentDate: number = Date.now();
-    this.chatService.addMessageToDB(currentDate,this.inputName,inputMessageTB);
-    this.inputMessageTB.nativeElement.value = ' ';
+   // resolve the adding of message to the database before clearing the chat box window.
+   // this requires using two different variable names one sent in from the button and another for clearing.
+   // I do not understand why, but even with using a promise if you use the same variable for both it does not work.
+    Promise.resolve(this.chatService.addMessageToDB(currentDate,this.inputName,inputMesFromButton)).then(function() {
+    });
+    this.inputMessageTB2.nativeElement.value = '';
+  
+
     }
 
 

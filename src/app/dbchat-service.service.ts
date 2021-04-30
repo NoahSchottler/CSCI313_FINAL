@@ -2,22 +2,21 @@ import { Injectable, ViewChild } from '@angular/core';
 import {message} from './message'
 import { AngularFirestore, AngularFirestoreDocument } from '@angular/fire/firestore';
 import { map } from 'rxjs/operators';
-
+import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { Bot } from './bot';
 
 @Injectable({
   providedIn: 'root'
 })
 export class DBChatServiceService {
   collectionPath= 'chatlog';
-  bots: { botName: string, botCase: string, botResponse: string }[] =[
-    { "botName": "Weather Bot","botCase":"!weather","botResponse":"Brrrr it is cold today in Fargo North Dakota" },
-    { "botName": "Bison Bot","botCase":"!ndsu bison","botResponse":"The North Dakota Bison won 42 to 20 against Eastern WA" },
-    { "botName": "Joke Bot","botCase":"!joke","botResponse": jokeRandomizer() },
-];
+
   messages: Observable<message[]>;
 
-  constructor(private firestore: AngularFirestore ) {   
+  bots: Bot[] = [];
+
+  constructor(private firestore: AngularFirestore, private http: HttpClient ) {   
     // What this line does is subscribes the message array observable to the 
     // firestore which acts as an observable emiting whenever .valuechanges calls. 
     // The .pipe map sorting thing sorts the information from the database in chronological order so that messages
@@ -29,9 +28,26 @@ export class DBChatServiceService {
     })))
    
   }
- 
-  addBot(name: string, bcase: string, response: string) {
-    this.bots.push({ "botName": name,"botCase": bcase,"botResponse": response });
+
+  ngOnInit(): void {
+    this.getBots();
+  }
+
+  addBot(newBot: Bot) {
+    return this.http.post('https://add-bot-372ed-default-rtdb.firebaseio.com/' + 'bot.json', newBot);
+  }
+
+  getBots() {
+    return this.http.get<Bot[]>('https://add-bot-372ed-default-rtdb.firebaseio.com/' + 'bot.json')
+    .pipe(map(responseData =>{
+      const botArray: Bot[] = [];
+
+      for(let key in responseData){
+        botArray.push(responseData[key]);
+      }
+      this.bots = botArray;
+      return botArray;
+    }))
   }
 
   addMessageToDB(inputDate: number, inputUserName: string, inputMessage: string) {
@@ -47,7 +63,6 @@ export class DBChatServiceService {
     */
    let responseMessage: string;
    let botName: string;
-   
 
    for(let i=0; i< this.bots.length;i++) {
     if(inputMessage.toLowerCase() == this.bots[i].botCase.toLowerCase()){

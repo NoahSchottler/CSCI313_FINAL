@@ -2,6 +2,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { DBChatServiceService } from '../dbchat-service.service';
 import { message } from '../message';
 export type EditorType = 'displayLogin' | 'displayChat' ;
+import { Bot } from '../bot';
 
 
 @Component({
@@ -18,6 +19,7 @@ export class MainChatWindowComponent implements OnInit {
   arr: message[] = [];
   inputName: string;
   showAddBot = false;
+  bots: Bot[] = [];
 
   constructor(private chatService: DBChatServiceService) { }
 
@@ -26,6 +28,10 @@ export class MainChatWindowComponent implements OnInit {
       this.arr = mess;
     }
   );
+
+  this.chatService.getBots().subscribe(data =>{
+    this.bots = data;
+  })
   }
   delete(){
     this.chatService.deleteAll();

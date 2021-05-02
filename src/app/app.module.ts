@@ -9,12 +9,14 @@ import { AngularFireModule } from "@angular/fire";
 import { AngularFirestoreModule } from "@angular/fire/firestore";
 import { FormsModule } from '@angular/forms'; // <-- NgModel lives here
 import { AddBotComponent } from './add-bot/add-bot.component';
+import { WeatherComponent } from './weather/weather.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     MainChatWindowComponent,
-    AddBotComponent
+    AddBotComponent,
+    WeatherComponent
   ],
   imports: [
     BrowserModule,

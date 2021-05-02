@@ -13,7 +13,7 @@ export class DBChatServiceService {
   collectionPath= 'chatlog';
 
   messages: Observable<message[]>;
-
+  
   bots: Bot[] = [];
 
   constructor(private firestore: AngularFirestore, private http: HttpClient ) {   
@@ -23,6 +23,7 @@ export class DBChatServiceService {
     // are displayed  ordered by the time they arrived. 
     // by default firebases are not sorted so we need to sort the data from the database when it arrives in our code
     // in this spot here.
+    
     this.messages=this.firestore.collection<message>(this.collectionPath).valueChanges().pipe(map(ev => ev.sort(function(a, b) {
       return a.date - b.date;
     })))
@@ -51,6 +52,8 @@ export class DBChatServiceService {
   }
 
   addMessageToDB(inputDate: number, inputUserName: string, inputMessage: string) {
+    if(inputMessage == "!weather")
+      return;
    this.firestore.collection<message>(this.collectionPath).add({
     date: inputDate,
     userName: inputUserName,
@@ -99,11 +102,25 @@ deleteAll( ): void {
     doc.ref.delete();
   });
 });
+this.firestore.collection('Location')
+.get()
+.toPromise()
+.then((querySnapshot) => {
+querySnapshot.forEach((doc) => {
+  doc.ref.delete();
+});
+});
+
 }
 
 getMessages(){
   return this.messages;
 }
+deleteLocations(arr: string[])
+{
+  arr = [];
+}
+
 //function botResponse(botResponse: any, firestore: AngularFirestore, responseMessage: string, botName: string, inputDate: number, collectionPathInput: string) {
 
 

@@ -1,23 +1,9 @@
-<div class="container" *ngIf="displayLoginEditor">
-  <div class="login">
-    <h1>Login screen enter a username</h1>
-    <input class="textInput" type="text" #userNameInput />
-    <button
-      class="btn btn-primary"
-      (click)="selectUserName(userNameInput.value)"
-    >
-      Choose this username
-    </button>
-  </div>
-</div>
-
-<div class="container" *ngIf="displayChat">
+<div class="container">
   <div class="row">
     <div class="col-3">
       <div *ngFor="let l of locations">
         <app-weather  [location]="l"></app-weather>
       </div>
-     
     </div>
     <div class="col-3">
        <app-add-bot *ngIf="showAddBot"></app-add-bot>
@@ -34,7 +20,7 @@
         </ol>
       </div>
 
-      <!-- if date display needs to be changed later here is a site explaining it 
+      <!-- if date display needs to be changed later here is a site explaining it
       https://www.angularjswiki.com/angular/angular-date-pipe-formatting-date-times-in-angular-with-examples/-->
       <div class="messagePanel">
         <div>
@@ -59,7 +45,6 @@
         </button>
         <div *ngIf = "isEdit">
           <p style="color: red">{{ message || null }}</p>
-      
           <div>
             <input placeholder="Enter a location" #input type="text" />
             <h1>{{ locdata.Location }}</h1>
@@ -70,7 +55,6 @@
           <br />
         </div>
       </div>
-      
     </div>
   </div>
 </div>

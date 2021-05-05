@@ -23,6 +23,10 @@ export class UsersService {
     console.log(this.USERS[1]);
   }
 
+  logout(){
+    this.loggedInUsername = "";
+  }
+
   setLoggedIn(name: string, pass: string): boolean{
     let user: User = {username: name, password: pass};
     this.USERS.forEach((element, index) => {

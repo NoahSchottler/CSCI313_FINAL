@@ -16,7 +16,7 @@ export class LoginComponent implements OnInit {
   }
 
   login(name: string, pass: string){
-    if(this.usersservice.setLoggedIn({username: name, password: pass})){
+    if(this.usersservice.setLoggedIn(name, pass)){
       this.router.navigate([`/chat`]);
     }
     else{

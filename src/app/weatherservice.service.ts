@@ -20,8 +20,6 @@ export class WeatherserviceService {
    let s = "";
    
    if(str.includes("!weather")){
-     if(str == "!weather")
-      return;
      s = str.substring(8,str.length);
      this.location = s; 
      this.locations.push(s);

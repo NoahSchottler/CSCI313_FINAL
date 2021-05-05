@@ -10,6 +10,7 @@ import { FormControl, FormGroup } from '@angular/forms';
 import { createOfflineCompileUrlResolver } from '@angular/compiler';
 import { WeatherserviceService } from '../weatherservice.service';
 import { UsersService } from '../users.service';
+import { Router } from '@angular/router';
 
 
 @Component({
@@ -28,7 +29,7 @@ loc: message[] = [];
   showAddBot = false;
   bots: Bot[] = [];
 
-  constructor(private chatService: DBChatServiceService,private firestore: AngularFirestore, private weatherService: WeatherserviceService, private UsersService: UsersService) {
+  constructor(private chatService: DBChatServiceService,private firestore: AngularFirestore, private weatherService: WeatherserviceService, private UsersService: UsersService,private router: Router) {
 
    }
 
@@ -80,6 +81,7 @@ loc: message[] = [];
       }
     }
   logout(){
+    this.router.navigate([`/login`]);
     this.toggleEditor("displayLogin");
     this.inputName="";
   }
@@ -103,9 +105,9 @@ loc: message[] = [];
 
   parseInput(str: string)
   {
-    let s = "";
+    let s = str.toLowerCase();
 
-   if(str.includes("!weather")){
+   if(s.includes("!weather")){
      s = str.substring(8,str.length);
 
    }
@@ -125,35 +127,7 @@ loc: message[] = [];
     this.isEdit = !this.isEdit;
   }
 
-  onQuery(str: string)
-  {
-    if (!str) {
-      this.message = 'Cannot be empty';
-      this.locdata = null;
-    } else {
-      this.firestore.collection('Location', ref => ref.where("Location", "==", str)).get()
-        .subscribe(ss => {
-          if (ss.docs.length === 0) {
-            this.message = 'Document not found! Try again!';
-            this.locdata = null;
-          } else {
-            ss.docs.forEach(doc => {
-              this.message = '';
-              this.locdata = doc.data();
-            })
-          }
-        })
-    }
-    const docRef = this.firestore.collection('Location', ref => ref.where("Location", "==", str)); //looks for same id
-    docRef.snapshotChanges().forEach((changes) => {
-      changes.map((a) => {
-        this.id = a.payload.doc.id;
-      });
-    });
-
-
-
-  }
+ 
   deleteMe() {
     if (confirm('Delete?')) {
       this.firestore.collection('Location').doc(this.id).delete();
@@ -175,11 +149,7 @@ loc: message[] = [];
 
   }
 
-  edit()
-  {
-     this.firestore.collection('Location').doc(this.id);
-
-  }
+ 
 deleteAll()
 {
 this.locations = [];

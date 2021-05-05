@@ -52,11 +52,10 @@ export class DBChatServiceService {
   }
 
   addMessageToDB(inputDate: number, inputUserName: string, inputMessage: string) {
-    if(inputMessage == "!weather")
-      return;
+ 
    this.firestore.collection<message>(this.collectionPath).add({
     date: inputDate,
-    userName: inputUserName,
+    userName: inputUserName, 
     message: inputMessage
    });
    

@@ -9,6 +9,8 @@
 .col-6 .chatWindow {
     border: 2px solid rgb(40, 87, 255);
     margin-bottom: 10px;
+    float: left;
+    padding: 15px; 
 }
 .messagePanel {
     text-align: center;
@@ -24,6 +26,5 @@
     margin-left: 15px;
 }
 
-input{
-    margin-right: 25px;
-}
+
+

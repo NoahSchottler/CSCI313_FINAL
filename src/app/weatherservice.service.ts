@@ -17,9 +17,9 @@ export class WeatherserviceService {
   }
   update(str: string)
   {
-   let s = "";
+    let s = str.toLowerCase();
    
-   if(str.includes("!weather")){
+   if(s.includes("!weather")){
      s = str.substring(8,str.length);
      this.location = s; 
      this.locations.push(s);
@@ -30,45 +30,18 @@ export class WeatherserviceService {
   }
   //store the location in the DB
   addLocationToDB(str: string) {
-
+    let s = str.toLowerCase();
 var citiesRef = this.firestore.collection("Location");
 
 citiesRef.doc().set({
-    Location: str
+    Location: s
    });
 
   }
   single: any;
   message: string = "";
-
   id: string = '';
-  onQuery(str: string)
-  {
-    if (!str) {
-      this.message = 'Cannot be empty';
-      this.single = null;
-    } else {
-      this.firestore.collection('Location', ref => ref.where("Location", "==", str)).get()
-        .subscribe(ss => {
-          if (ss.docs.length === 0) {
-            this.message = 'Document not found! Try again!';
-            this.single = null;
-          } else {
-            ss.docs.forEach(doc => {
-              this.message = '';
-              this.single = doc.data();
-            })
-          }
-        })
-    }
-    const docRef = this.firestore.collection('Location', ref => ref.where("Location", "==", str)); //looks for same id
-    docRef.snapshotChanges().forEach((changes) => {
-      changes.map((a) => {
-        this.id = a.payload.doc.id;
-      });
-    });
-    
-  }
+  
  
  
  

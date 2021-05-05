@@ -1,20 +1,18 @@
 
 <div id="divWeatherMain" [ngClass]=" WeatherData.isDay? 'day': 'night'"> 
-    <div class="weatherWidgetRow" style="font-size: 32px;margin-top: 5px;">{{tempp}}°</div>
+    <div class="weatherWidgetRow" style="font-size: 25px;margin-top: 10px;">{{WeatherData.name}}</div>
+    <div class="weatherWidgetRow" *ngIf = "WeatherData.isDay">
+        <i class="fas fa-sun fa-2x"></i>     
+        </div>
+        <div class="weatherWidgetRow" *ngIf = "!WeatherData.isDay">
+            <i class="fas fa-moon fa-2x"></i>         
+        </div>
+    <div class="weatherWidgetRow" style="font-size: 32px;">{{tempp}}°</div>
     <div class="weatherWidgetRow" style="font-size: 12px;">{{WeatherData.temp_min}}° / {{WeatherData.temp_max}}°</div>
     <div class="weatherWidgetRow" style="font-size: 12px;">Feels Like: {{WeatherData.temp_feels_like}}°</div>
-    <div class="weatherWidgetRow" style="font-size: 25px;margin-top: 10px;">{{WeatherData.name}}</div>
     <div class="weatherWidgetRow" style="font-size: 12px;">Humidity: {{WeatherData.main.humidity}}%</div>
-    <div *ngIf = "WeatherData.isDay">
-    <i class="fas fa-sun fa-2x"></i>
-    <a (click) = "del(this.location)" class="btn btn-danger" href="#">
-        <i class="far fa-trash-alt fa-1x"></i></a>
-    </div>
-    <div *ngIf = "!WeatherData.isDay">
-        <i class="fas fa-moon fa-2x"></i>
-        <a (click) = "del(this.location)" class="btn btn-danger" href="#">
-            <i class="far fa-trash-alt"></i></a>
-    </div>
+    
+    
    
 
 </div>

@@ -20,20 +20,21 @@ export class UsersService {
 
   addUser(user: User){
     this.USERS.push(user);
+    console.log(this.USERS[1]);
   }
 
-  setLoggedIn(user: User): boolean{
+  setLoggedIn(name: string, pass: string): boolean{
+    let user: User = {username: name, password: pass};
     this.USERS.forEach((element, index) => {
-      if(user.username == element.username && user.password == element.password){
+      if(user.username === element.username  && user.password === element.password){
         this.loggedInUsername = element.username;
-        return true;
       }
     });
     if(this.loggedInUsername == ""){
       console.log("User was not found with the input credentials.");
       return false;
     }
-    return false;
+    return true;
   }
 
   deleteUser(user: User){
@@ -42,6 +43,10 @@ export class UsersService {
         this.USERS.splice(index,1);
       }
     });
+  }
+
+  getLoggedInUsername(): string{
+    return this.loggedInUsername;
   }
 
 

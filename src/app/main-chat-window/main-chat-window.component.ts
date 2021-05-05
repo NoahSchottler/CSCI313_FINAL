@@ -9,6 +9,7 @@ import { map } from 'rxjs/operators';
 import { FormControl, FormGroup } from '@angular/forms';
 import { createOfflineCompileUrlResolver } from '@angular/compiler';
 import { WeatherserviceService } from '../weatherservice.service';
+import { UsersService } from '../users.service';
 
 
 @Component({
@@ -27,17 +28,19 @@ loc: message[] = [];
   showAddBot = false;
   bots: Bot[] = [];
 
-  constructor(private chatService: DBChatServiceService,private firestore: AngularFirestore, private weatherService: WeatherserviceService) {
-   
+  constructor(private chatService: DBChatServiceService,private firestore: AngularFirestore, private weatherService: WeatherserviceService, private UsersService: UsersService) {
+
    }
 
-  ngOnInit( ) {this.chatService.getMessages().subscribe(
+  ngOnInit( ) {
+    this.inputName = this.UsersService.getLoggedInUsername();
+    this.chatService.getMessages().subscribe(
     (mess: message[]) => {
       this.arr = mess;
     }
   );
     this.addLocationsToArray();
-    
+
   this.chatService.getBots().subscribe(data =>{
     this.bots = data;
   })
@@ -65,7 +68,7 @@ loc: message[] = [];
     Promise.resolve(this.chatService.addMessageToDB(currentDate,this.inputName,inputMesFromButton)).then(function() {
     });
     this.inputMessageTB2.nativeElement.value = '';
-    
+
   }
 
   selectUserName(userNameInput: string){
@@ -101,10 +104,10 @@ loc: message[] = [];
   parseInput(str: string)
   {
     let s = "";
-   
+
    if(str.includes("!weather")){
      s = str.substring(8,str.length);
-    
+
    }
    return s;
   }
@@ -147,9 +150,9 @@ loc: message[] = [];
         this.id = a.payload.doc.id;
       });
     });
- 
-   
-    
+
+
+
   }
   deleteMe() {
     if (confirm('Delete?')) {
@@ -157,25 +160,25 @@ loc: message[] = [];
       this.locdata = null;
   }
   }
- 
+
   addLocationsToArray()
   {
     this.firestore.collection('Location').get().toPromise().then((querySnapshot) => {
       querySnapshot.forEach((doc) => {
           // doc.data() is never undefined for query doc snapshots
          // console.log(doc.id, " => ", doc.get('Location'));
-          var loc = doc.get('Location');      
+          var loc = doc.get('Location');
           this.locations.push(loc);
           console.log(this.locations[0] + "Hit me")
       });
   });
-    
+
   }
 
   edit()
   {
      this.firestore.collection('Location').doc(this.id);
-     
+
   }
 deleteAll()
 {

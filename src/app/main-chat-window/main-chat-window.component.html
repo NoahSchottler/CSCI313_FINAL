@@ -1,15 +1,8 @@
 <div class = "body">
 <div class="container">
-  
   <div class="row">
-    <div class="col-3">
-      
-    </div>
-    <div class="col-3">
-       <app-add-bot *ngIf="showAddBot"></app-add-bot>
-    </div>
+    <div class="col-3"></div>
     <div class="col-6">
-      
       <div class="chatWindow">
         <ol *ngFor="let messageToDisplay of arr">
           <div #displayAllLoop>
@@ -23,7 +16,6 @@
           <app-weather  [location]="l"></app-weather>
         </div>
       </div>
-
       <!-- if date display needs to be changed later here is a site explaining it
       https://www.angularjswiki.com/angular/angular-date-pipe-formatting-date-times-in-angular-with-examples/-->
       <div class="messagePanel">
@@ -45,13 +37,15 @@
           Show/Hide Add Bot
         </button>
       </div>
-      
     </div>
-    
+  </div>
+</div>
+<br><br><div class="containter">
+  <div *ngIf="showAddBot">
+    <app-add-bot></app-add-bot>
   </div>
 </div>
 <div>
-  
 </div>
 </div>
 

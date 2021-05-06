@@ -1,6 +1,9 @@
 .row {
     text-align: center;
     border: 2px solid rgb(40, 87, 255);
+    width: 20%;
+    height: 20%;
+    margin-left: 25%;
 }
 .btn {
     margin-top: 15px;

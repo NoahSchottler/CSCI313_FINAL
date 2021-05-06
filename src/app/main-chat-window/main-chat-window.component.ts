@@ -28,7 +28,7 @@ loc: message[] = [];
   inputName: string;
   showAddBot = false;
   bots: Bot[] = [];
-
+  count: number = -1;
   constructor(private chatService: DBChatServiceService,private firestore: AngularFirestore, private weatherService: WeatherserviceService, private UsersService: UsersService,private router: Router) {
 
    }
@@ -72,7 +72,12 @@ loc: message[] = [];
    sendMessage(inputMesFromButton){
     const currentDate: number = Date.now();
     this.update(inputMesFromButton);
-  
+    let s = inputMesFromButton.toLowerCase();
+    if(s.includes("!weather"))
+    {
+      this.count = this.count+1;
+      console.log(this.count + "count");
+    }
     this.parseInput(inputMesFromButton);
     
    // resolve the adding of message to the database before clearing the chat box window.
@@ -128,7 +133,36 @@ loc: message[] = [];
      this.showWeather = false;
    }
 
+   return s;
+  }
+
+  parseInput2(str: string)
+  {
+    let s = str.toLowerCase();
+
+   if(s.includes("!weather")){
+     s = str.substring(8,str.length);
+    this.showWeather = true;
+   }else{
+     this.showWeather = false;
+     ++this.count;
+   }
+
    return this.showWeather;
+  }
+
+  parseInput3(str: string)
+  {
+    let s = str.toLowerCase();
+
+   if(s.includes("!weather")){
+     s = str.substring(8,str.length);
+    this.showWeather = true;
+   }else{
+     this.showWeather = false;
+   }
+
+   return s;
   }
   //store the location in the DB
   addLocationToDB(str: string) {

@@ -25,12 +25,9 @@
               {{ messageToDisplay.userName }}: {{ messageToDisplay.message }}
               
               </p>
-              <app-weather *ngIf = "showWeather"  [location]="locations[0]"></app-weather>
+              <app-weather *ngIf = "parseInput2(messageToDisplay.message)"  [location]="parseInput3(messageToDisplay.message)"></app-weather>
           </div>
         </ol> 
-        <div *ngFor = "let l of locations">
-          
-        </div>
       </div>
       <!-- if date display needs to be changed later here is a site explaining it
       https://www.angularjswiki.com/angular/angular-date-pipe-formatting-date-times-in-angular-with-examples/-->

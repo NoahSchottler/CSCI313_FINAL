@@ -69,7 +69,7 @@ export class DBChatServiceService {
     if(inputMessage.toLowerCase() == this.bots[i].botCase.toLowerCase()){
 
       if(this.bots[i].botCase.toLowerCase() == "!joke"){
-        responseMessage=inputUserName +" : " + jokeRandomizer();
+        responseMessage=inputUserName + jokeRandomizer();
         botName = this.bots[i].botName
         botResponseNew(this.firestore,responseMessage,botName,inputDate,this.collectionPath);
         break;

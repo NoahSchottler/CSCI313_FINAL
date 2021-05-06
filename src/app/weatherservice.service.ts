@@ -24,7 +24,6 @@ export class WeatherserviceService {
         return;
      s = str.substring(8,str.length);
      this.location = s; 
-     this.locations.push(s);
      console.log("added" + s)
      console.log(this.locations[0])
      this.addLocationToDB(s);

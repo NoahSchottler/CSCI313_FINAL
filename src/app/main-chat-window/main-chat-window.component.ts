@@ -67,6 +67,9 @@ loc: message[] = [];
    sendMessage(inputMesFromButton){
     const currentDate: number = Date.now();
     this.update(inputMesFromButton);
+  
+    this.parseInput(inputMesFromButton);
+    
    // resolve the adding of message to the database before clearing the chat box window.
    // this requires using two different variable names one sent in from the button and another for clearing.
    // I do not understand why, but even with using a promise if you use the same variable for both it does not work.
@@ -107,16 +110,20 @@ loc: message[] = [];
   {
   this.weatherService.update(str);
   }
-
+  showWeather: boolean = false;
   parseInput(str: string)
   {
     let s = str.toLowerCase();
 
    if(s.includes("!weather")){
      s = str.substring(8,str.length);
-
+    this.showWeather = true;
+    this.locations.push(s);
+   }else{
+     this.showWeather = false;
    }
-   return s;
+
+   return this.showWeather;
   }
   //store the location in the DB
   addLocationToDB(str: string) {

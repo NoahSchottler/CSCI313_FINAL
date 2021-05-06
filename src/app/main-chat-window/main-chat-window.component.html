@@ -1,9 +1,7 @@
 <div class="container">
   <div class="row">
     <div class="col-3"> 
-      <div class= "weather"*ngFor="let l of locations">
-          <app-weather  [location]="l"></app-weather>
-      </div>
+     
       <div *ngIf="showAddBot">
           <app-add-bot></app-add-bot>
       </div>
@@ -13,15 +11,19 @@
     </div>
     <div class="col-6">
       <div class="chatWindow">
-        <ol *ngFor="let messageToDisplay of arr">
+        <ol *ngFor="let messageToDisplay of arr, let i = index">
           <div #displayAllLoop>
             <p>
               {{ messageToDisplay.date | date: "shortTime" }}
               {{ messageToDisplay.userName }}: {{ messageToDisplay.message }}
-            </p>
+              
+              </p>
+              <app-weather *ngIf = "showWeather"  [location]="locations[0]"></app-weather>
           </div>
-        </ol>
-
+        </ol> 
+        <div *ngFor = "let l of locations">
+          
+        </div>
       </div>
       <!-- if date display needs to be changed later here is a site explaining it
       https://www.angularjswiki.com/angular/angular-date-pipe-formatting-date-times-in-angular-with-examples/-->
@@ -47,6 +49,5 @@
     </div>
   </div>
 </div>
-
 
 

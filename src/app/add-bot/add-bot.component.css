@@ -8,3 +8,7 @@
 .btn {
     margin-top: 15px;
 }
+button {
+    margin-top: 50px;
+    z-index: 555;
+}

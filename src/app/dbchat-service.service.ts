@@ -33,7 +33,6 @@ export class DBChatServiceService {
   ngOnInit(): void {
     this.getBots();
   }
-
   addBot(newBot: Bot) {
     return this.http.post('https://add-bot-372ed-default-rtdb.firebaseio.com/' + 'bot.json', newBot);
   }

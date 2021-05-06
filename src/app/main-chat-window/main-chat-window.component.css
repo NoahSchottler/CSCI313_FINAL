@@ -25,6 +25,12 @@
     margin-right: 15px;
     margin-left: 15px;
 }
+.currentBots {
+    margin-right: 35px;
+    border: 2px solid rgb(40, 87, 255);
+    margin-top: 350px;
+    text-align: center;
+}
 
 
 

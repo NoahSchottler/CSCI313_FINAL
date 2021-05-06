@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, Input } from '@angular/core';
 import { DBChatServiceService } from '../dbchat-service.service';
 import { AngularFirestore } from "@angular/fire/firestore";
 import { message } from '../message';
@@ -11,7 +11,7 @@ import { createOfflineCompileUrlResolver } from '@angular/compiler';
 import { WeatherserviceService } from '../weatherservice.service';
 import { UsersService } from '../users.service';
 import { Router } from '@angular/router';
-
+import { interval } from 'rxjs';
 
 @Component({
   selector: 'app-main-chat-window',
@@ -44,6 +44,11 @@ loc: message[] = [];
       this.arr = mess;
     }
   );
+    interval(1000).subscribe(x => {
+       this.chatService.getBots().subscribe(data => {
+       this.bots = data;
+      })
+    });
     this.addLocationsToArray();
 
   this.chatService.getBots().subscribe(data =>{

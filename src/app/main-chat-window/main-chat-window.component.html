@@ -7,9 +7,15 @@
       <div *ngIf="showAddBot">
           <app-add-bot></app-add-bot>
       </div>
+
     </div>
     <div class="col-3">
-
+      <div class="currentBots">
+        <h1>Bots</h1>
+        <p *ngFor = "let x of bots">
+           {{x.botName}}    |    {{x.botCase}}
+        </p>
+      </div>
     </div>
     <div class="col-6">
       <div class="chatWindow">

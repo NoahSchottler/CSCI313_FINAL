@@ -1,8 +1,8 @@
 #divWeatherMain{
     display: block;
     border-radius: 10px;
-    width: 175px;
-    height: 220px;
+    width: 200px;
+    height: 280px;
     position: fixed;
 
     color: white;;
@@ -37,4 +37,7 @@ background: linear-gradient(to right, #FFC371, #FF5F6D); /* W3C, IE 10+/ Edge, F
     background: #f31a2c;  /* fallback for old browsers */
 background: -webkit-linear-gradient(to right, #f8a32c, #ff1327);  /* Chrome 10-25, Safari 5.1-6 */
 background: linear-gradient(to right, #f8a32c, #ff1327); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+}
+.temp {
+    text-align: center;
 }

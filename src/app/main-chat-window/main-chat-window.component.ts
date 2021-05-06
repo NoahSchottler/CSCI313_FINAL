@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, Input } from '@angular/core';
 import { DBChatServiceService } from '../dbchat-service.service';
 import { AngularFirestore } from "@angular/fire/firestore";
 import { message } from '../message';
@@ -11,7 +11,7 @@ import { createOfflineCompileUrlResolver } from '@angular/compiler';
 import { WeatherserviceService } from '../weatherservice.service';
 import { UsersService } from '../users.service';
 import { Router } from '@angular/router';
-
+import { interval } from 'rxjs';
 
 @Component({
   selector: 'app-main-chat-window',
@@ -28,18 +28,27 @@ loc: message[] = [];
   inputName: string;
   showAddBot = false;
   bots: Bot[] = [];
-
+  count: number = -1;
   constructor(private chatService: DBChatServiceService,private firestore: AngularFirestore, private weatherService: WeatherserviceService, private UsersService: UsersService,private router: Router) {
 
    }
 
   ngOnInit( ) {
     this.inputName = this.UsersService.getLoggedInUsername();
+    if(this.inputName === ""){
+      alert("You must be logged in to view this page.");
+      this.logout();
+    }
     this.chatService.getMessages().subscribe(
     (mess: message[]) => {
       this.arr = mess;
     }
   );
+    interval(1000).subscribe(x => {
+       this.chatService.getBots().subscribe(data => {
+       this.bots = data;
+      })
+    });
     this.addLocationsToArray();
 
   this.chatService.getBots().subscribe(data =>{
@@ -63,6 +72,14 @@ loc: message[] = [];
    sendMessage(inputMesFromButton){
     const currentDate: number = Date.now();
     this.update(inputMesFromButton);
+    let s = inputMesFromButton.toLowerCase();
+    if(s.includes("!weather"))
+    {
+      this.count = this.count+1;
+      console.log(this.count + "count");
+    }
+    this.parseInput(inputMesFromButton);
+    
    // resolve the adding of message to the database before clearing the chat box window.
    // this requires using two different variable names one sent in from the button and another for clearing.
    // I do not understand why, but even with using a promise if you use the same variable for both it does not work.
@@ -81,9 +98,10 @@ loc: message[] = [];
       }
     }
   logout(){
+    this.UsersService.logout();
+    this.inputName="";
     this.router.navigate([`/login`]);
     this.toggleEditor("displayLogin");
-    this.inputName="";
   }
 
   toggleEditor(type: EditorType) { // this is what we use to send in a message to change from login screen to chat screen or vice versa
@@ -102,15 +120,48 @@ loc: message[] = [];
   {
   this.weatherService.update(str);
   }
-
+  showWeather: boolean = false;
   parseInput(str: string)
   {
     let s = str.toLowerCase();
 
    if(s.includes("!weather")){
      s = str.substring(8,str.length);
-
+    this.showWeather = true;
+    this.locations.push(s);
+   }else{
+     this.showWeather = false;
    }
+
+   return s;
+  }
+
+  parseInput2(str: string)
+  {
+    let s = str.toLowerCase();
+
+   if(s.includes("!weather")){
+     s = str.substring(8,str.length);
+    this.showWeather = true;
+   }else{
+     this.showWeather = false;
+     ++this.count;
+   }
+
+   return this.showWeather;
+  }
+
+  parseInput3(str: string)
+  {
+    let s = str.toLowerCase();
+
+   if(s.includes("!weather")){
+     s = str.substring(8,str.length);
+    this.showWeather = true;
+   }else{
+     this.showWeather = false;
+   }
+
    return s;
   }
   //store the location in the DB
@@ -127,7 +178,7 @@ loc: message[] = [];
     this.isEdit = !this.isEdit;
   }
 
- 
+
   deleteMe() {
     if (confirm('Delete?')) {
       this.firestore.collection('Location').doc(this.id).delete();
@@ -149,7 +200,7 @@ loc: message[] = [];
 
   }
 
- 
+
 deleteAll()
 {
 this.locations = [];

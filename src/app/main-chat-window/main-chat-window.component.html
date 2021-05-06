@@ -1,29 +1,34 @@
-<div class = "body">
 <div class="container">
-  
   <div class="row">
-    <div class="col-3">
-      
+    <div class="col-3"> 
+     
+      <div *ngIf="showAddBot">
+          <app-add-bot></app-add-bot>
+      </div>
+
     </div>
     <div class="col-3">
-       <app-add-bot *ngIf="showAddBot"></app-add-bot>
+      <div class="currentBots">
+        <h1>Bots</h1>
+        <p>Weather  | !weather (city)</p>
+        <p *ngFor = "let x of bots">
+           {{x.botName}}    |    {{x.botCase}}
+        </p>
+      </div>
     </div>
     <div class="col-6">
-      
       <div class="chatWindow">
-        <ol *ngFor="let messageToDisplay of arr">
+        <ol *ngFor="let messageToDisplay of arr, let i = index">
           <div #displayAllLoop>
             <p>
               {{ messageToDisplay.date | date: "shortTime" }}
               {{ messageToDisplay.userName }}: {{ messageToDisplay.message }}
-            </p>
+              
+              </p>
+              <app-weather *ngIf = "parseInput2(messageToDisplay.message)"  [location]="parseInput3(messageToDisplay.message)"></app-weather>
           </div>
-        </ol>
-        <div *ngFor="let l of locations">
-          <app-weather  [location]="l"></app-weather>
-        </div>
+        </ol> 
       </div>
-
       <!-- if date display needs to be changed later here is a site explaining it
       https://www.angularjswiki.com/angular/angular-date-pipe-formatting-date-times-in-angular-with-examples/-->
       <div class="messagePanel">
@@ -36,23 +41,17 @@
             Send Message
           </button>
         </div>
-        <br />
+        <p></p>
         <button class="btn btn-info" (click)="logout()">Logout</button>
         <button class="btn btn-danger" (click)="delete()">
-          Delete all messages debug
+          Delete All Messages/Weather
         </button>
         <button class="btn btn-success" (click)="addBotButton()">
           Show/Hide Add Bot
         </button>
       </div>
-      
     </div>
-    
   </div>
-</div>
-<div>
-  
-</div>
 </div>
 
 

@@ -35,6 +35,10 @@ loc: message[] = [];
 
   ngOnInit( ) {
     this.inputName = this.UsersService.getLoggedInUsername();
+    if(this.inputName === ""){
+      alert("You must be logged in to view this page.");
+      this.logout();
+    }
     this.chatService.getMessages().subscribe(
     (mess: message[]) => {
       this.arr = mess;
@@ -81,9 +85,10 @@ loc: message[] = [];
       }
     }
   logout(){
+    this.UsersService.logout();
+    this.inputName="";
     this.router.navigate([`/login`]);
     this.toggleEditor("displayLogin");
-    this.inputName="";
   }
 
   toggleEditor(type: EditorType) { // this is what we use to send in a message to change from login screen to chat screen or vice versa
@@ -127,7 +132,7 @@ loc: message[] = [];
     this.isEdit = !this.isEdit;
   }
 
- 
+
   deleteMe() {
     if (confirm('Delete?')) {
       this.firestore.collection('Location').doc(this.id).delete();
@@ -149,7 +154,7 @@ loc: message[] = [];
 
   }
 
- 
+
 deleteAll()
 {
 this.locations = [];

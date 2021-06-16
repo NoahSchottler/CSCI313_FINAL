@@ -5,14 +5,13 @@
 export const environment = {
   production: false,
    firebaseConfig:  {
-    apiKey: "AIzaSyCeMX8re19C9kWMNW1m4NdxSc7_XQoyIvU",
-    authDomain: "test-82121.firebaseapp.com",
-    databaseURL: "https://test-82121-default-rtdb.firebaseio.com",
-    projectId: "test-82121",
-    storageBucket: "test-82121.appspot.com",
-    messagingSenderId: "748902424241",
-    appId: "1:748902424241:web:0006a03c26d5ebbef80c90",
-    measurementId: "G-J99PZCDBG0"
+     apiKey: "AIzaSyCUebNGyaa-asG1kKqwzxLRKGs_8quEMDU",
+    authDomain: "chatroom-bf93d.firebaseapp.com",
+    projectId: "chatroom-bf93d",
+    storageBucket: "chatroom-bf93d.appspot.com",
+    messagingSenderId: "811885360899",
+    appId: "1:811885360899:web:f47e997203637ec917db36",
+    measurementId: "G-88JBWLTMSH"
   }
 };
 

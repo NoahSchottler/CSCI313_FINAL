@@ -100,7 +100,7 @@ deleteAll( ): void {
     doc.ref.delete();
   });
 });
-this.firestore.collection('Location')
+this.firestore.collection('Location')   
 .get()
 .toPromise()
 .then((querySnapshot) => {
